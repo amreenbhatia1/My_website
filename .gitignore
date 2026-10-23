@@ -1,0 +1,22 @@
+# dependencies
+/node_modules
+
+# build output
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Source resumes contain a phone number; never commit them
+/resumes/
+
+# env files (no secrets are needed, but never commit them)
+.env*
+!.env.example
+
+# misc
+.DS_Store
+Thumbs.db
+*.log
+.vercel
+.netlify

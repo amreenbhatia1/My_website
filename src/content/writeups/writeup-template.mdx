@@ -1,0 +1,56 @@
+export const metadata = {
+  title: "Writeup template: how to structure a CTF writeup",
+  date: "2026-10-20",
+  summary:
+    "Example post showing the structure and formatting available for writeups. Copy this file to start a new one.",
+  tags: ["template", "ctf"],
+  // TODO: This is an example. It stays hidden on the live site while draft is true.
+  // Delete this file (or set draft: false after replacing the content) once you publish a real writeup.
+  draft: true,
+};
+
+> **TODO:** This is a template, not a real writeup. Replace everything below with your own content,
+> then set `draft: false` in the `metadata` block at the top of this file.
+
+A good writeup tells the reader what the challenge was, how you approached it, and what a defender
+should take away from it. The sections below are a suggested structure.
+
+## Challenge overview
+
+- **Event:** _CTF name and year_
+- **Category:** _web / pwn / forensics / ..._
+- **Difficulty:** _easy / medium / hard_
+- **Points:** _points_
+
+Describe the prompt and any files or endpoints you were given.
+
+## Recon
+
+What did you look at first, and why? Include the commands you ran:
+
+```bash
+nmap -sV -p- target.example
+```
+
+## Exploitation
+
+Walk through the steps that worked, and briefly mention the dead ends that taught you something.
+Inline code looks like `curl -s http://target.example/api`.
+
+## Detection and defense
+
+Because this site covers both security and engineering, close with the blue-team view:
+
+- What log source would show this attack?
+- What would a detection (for example a Splunk correlation search) look like?
+- Which MITRE ATT&CK technique does it map to?
+- How would you fix it in the code?
+
+## Lessons learned
+
+One or two sentences on what you'd do differently next time.
+
+---
+
+_Formatting reference: `##` headings, fenced code blocks, lists, block quotes, bold/italic text, and
+links like [MITRE ATT&CK](https://attack.mitre.org/) all work in `.mdx` files._
