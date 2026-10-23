@@ -32,8 +32,8 @@ src/
 public/
   _headers                <- Netlify security headers
 scripts/postbuild.mjs     <- injects the hash-based Content-Security-Policy
-vercel.json               <- Vercel security headers
-.github/workflows/        <- GitHub Pages deployment
+netlify.toml              <- Netlify build settings
+vercel.json               <- Vercel security headers (only if you switch to Vercel)
 ```
 
 ---
@@ -164,10 +164,24 @@ The build output is plain static files in `./out`. Two environment variables con
 
 | Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://amreen.vercel.app` (canonical URLs, Open Graph, sitemap, robots) |
-| `NEXT_PUBLIC_BASE_PATH` | Sub-path, only for GitHub Pages project sites (set automatically by the workflow) |
+| `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://your-site.netlify.app` (canonical URLs, Open Graph, sitemap, robots) |
+| `NEXT_PUBLIC_BASE_PATH` | Sub-path, only if the site is served under one (e.g. `/portfolio`). Not needed on Netlify |
 
-### Vercel (recommended: free, supports the security headers)
+### Netlify (current host)
+
+1. Go to <https://app.netlify.com/start>, sign in with GitHub, and pick the `My_website` repository.
+2. Leave the build settings as detected. `netlify.toml` already sets the build command (`npm run build`),
+   publish directory (`out`), and Node version.
+3. Click **Deploy**. Netlify gives the site a URL like `https://random-name-123.netlify.app`. You can rename it under
+   **Site configuration → Site details → Change site name**.
+4. Under **Site configuration → Environment variables**, add `NEXT_PUBLIC_SITE_URL` = your site URL
+   (e.g. `https://your-site.netlify.app`), then **Deploys → Trigger deploy → Deploy site** so the sitemap and
+   Open Graph links use it.
+5. Security headers come from `public/_headers`. Verify with the `curl` commands above.
+6. Every push to `main` redeploys automatically.
+7. Optional: add a custom domain under **Domain management**, then update `NEXT_PUBLIC_SITE_URL` and redeploy.
+
+### Vercel (alternative)
 
 1. Push this project to a GitHub repository.
 2. Go to <https://vercel.com/new> and import the repository.
@@ -179,26 +193,6 @@ The build output is plain static files in `./out`. Two environment variables con
 6. Click **Deploy**. `vercel.json` applies the security headers automatically.
 7. Verify with the `curl` commands above. Every page's source should contain `<meta http-equiv="Content-Security-Policy"`.
 8. Optional: add a custom domain under **Project → Settings → Domains**, then update `NEXT_PUBLIC_SITE_URL` and redeploy.
-
-### GitHub Pages (free; no custom headers)
-
-1. Push this project to a GitHub repository on the `main` branch.
-2. In the repo, go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-3. Push to `main`, or run **Actions → Deploy to GitHub Pages → Run workflow**.
-   `.github/workflows/deploy-pages.yml` builds the site and sets `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL` for you.
-4. The site is published at `https://<username>.github.io/<repo>/`. If the repo is named `<username>.github.io`,
-   it's published at the root instead.
-5. Optional custom domain: **Settings → Pages → Custom domain**, then enable **Enforce HTTPS**.
-
-> GitHub Pages can't send custom HTTP headers. The per-page `<meta>` CSP still protects against script
-> injection, but `X-Frame-Options`/`frame-ancestors` (clickjacking protection), `Permissions-Policy`, and
-> the other headers are not applied there. Use Vercel or Netlify for the full header set.
-
-### Netlify (alternative)
-
-Import the repo at <https://app.netlify.com/start>. `netlify.toml` already sets the build command
-(`npm run build`), publish directory (`out`), and Node version. Add `NEXT_PUBLIC_SITE_URL` under
-**Site configuration → Environment variables**. Security headers come from `public/_headers`.
 
 ---
 
@@ -219,7 +213,7 @@ Import the repo at <https://app.netlify.com/start>. `netlify.toml` already sets 
 
 Search the code for `TODO:` to find every placeholder. Here's the full list:
 
-1. **`NEXT_PUBLIC_SITE_URL`.** Set it on Vercel or Netlify (GitHub Pages sets it automatically).
+1. **`NEXT_PUBLIC_SITE_URL`.** Set it in Netlify's environment variables (see Deployment).
 2. **About text.** Review `profile.about` and rewrite it in your own voice (it's built only from resume facts).
 3. **Photo (optional).** Add `public/photo.jpg` and set `profile.photo: "/photo.jpg"`.
 4. **Personal website (optional).** `profile.links.website`.

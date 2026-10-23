@@ -5,4 +5,4 @@
 [build.environment]
   NODE_VERSION = "22"
   # TODO: Set NEXT_PUBLIC_SITE_URL in Netlify > Site configuration > Environment variables
-  # (e.g. https://your-site.netlify.app). Security headers live in public/_headers.
+  # (e.g. https://your-site.netlify.app), then redeploy. Security headers live in public/_headers.
